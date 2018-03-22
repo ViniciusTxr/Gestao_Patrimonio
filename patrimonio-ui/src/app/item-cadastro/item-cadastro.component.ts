@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import { ItemService } from '../item.service';
 
@@ -9,11 +10,7 @@ import { ItemService } from '../item.service';
 })
 export class ItemCadastroComponent implements OnInit {
 
-  itens = [
-    {etiqueta: 'AA1234', descricao: 'NoteBook', dataAquisicao: new Date()},
-    {etiqueta: 'BB9876', descricao: 'Mouse', dataAquisicao: new Date()}
-
-  ];
+  itens = [];
 
   constructor(private itemService: ItemService) { }
 
@@ -23,6 +20,16 @@ export class ItemCadastroComponent implements OnInit {
 
   consultar() {
     this.itemService.listar().subscribe(dados => this.itens = dados);
+  }
+
+  adicionar(frm: FormControl) {
+    console.log(frm.value);
+
+    this.itemService.adicionar(frm.value)
+      .subscribe(() => {
+        frm.reset();
+        this.consultar();
+      });
   }
 
 }
